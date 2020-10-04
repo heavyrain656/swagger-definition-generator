@@ -1,8 +1,8 @@
-package org.jetbrains.plugins.template.listeners
+package com.github.heavyrain656.swaggerdefinitiongenerator.listeners
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
-import org.jetbrains.plugins.template.services.MyProjectService
+import com.github.heavyrain656.swaggerdefinitiongenerator.services.MyProjectService
 
 internal class MyProjectManagerListener : ProjectManagerListener {
 

@@ -1,7 +1,7 @@
-package org.jetbrains.plugins.template.services
+package com.github.heavyrain656.swaggerdefinitiongenerator.services
 
 import com.intellij.openapi.project.Project
-import org.jetbrains.plugins.template.MyBundle
+import com.github.heavyrain656.swaggerdefinitiongenerator.MyBundle
 
 class MyProjectService(project: Project) {
 
