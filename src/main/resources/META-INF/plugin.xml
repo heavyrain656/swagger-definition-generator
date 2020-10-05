@@ -6,14 +6,17 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.heavyrain656.swaggerdefinitiongenerator.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.heavyrain656.swaggerdefinitiongenerator.services.MyProjectService"/>
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.jetbrains.php</depends>
+    <actions>
+        <action class="com.github.pavelsemenov.swaggerschemagenerator.action.TestAction" id="PsiNavigationDemo"
+                text="PSI Navigation Demo...">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+    <extensions>
+        <com.intellij.projectService
+                serviceInterface="com.github.pavelsemenov.swaggerschemagenerator.service.SwaggerSchemaService"
+                serviceImplementation="com.github.pavelsemenov.swaggerschemagenerator.service.impl.SwaggerSchemaServiceImpl"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.heavyrain656.swaggerdefinitiongenerator.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
