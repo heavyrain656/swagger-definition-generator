@@ -1,4 +1,4 @@
-package com.github.pavelsemenov.swaggerschemagenerator.psi;
+package com.github.pavelsemenov.swaggerschemagenerator;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
@@ -10,14 +10,14 @@ import com.jetbrains.php.lang.psi.PhpFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class BasePhpFileTest extends BasePlatformTestCase {
-    PhpFile preparePhpFile(String fileName) {
+    public PhpFile preparePhpFile(String fileName) {
         PsiFile psiFile = preparePsiFile(fileName);
         assertThat(psiFile).isInstanceOf(PhpFile.class);
 
         return (PhpFile) psiFile;
     }
 
-    PsiFile preparePsiFile(String fileName) {
+    public PsiFile preparePsiFile(String fileName) {
         VirtualFile file = myFixture.copyFileToProject(fileName);
         PsiManager psiManager = PsiManager.getInstance(getProject());
         PsiFile psiFile = psiManager.findFile(file);
@@ -26,7 +26,7 @@ public abstract class BasePhpFileTest extends BasePlatformTestCase {
         return psiFile;
     }
 
-    PhpIndex getIndex() {
+    public PhpIndex getIndex() {
         return PhpIndex.getInstance(getProject());
     }
 

@@ -1,8 +1,11 @@
 <?php
 
+
 namespace tests;
 
-class ExampleDTO {
+
+class ClassTestDTO
+{
     public const CONSTANT = 1;
 
     public static $staticProp;
@@ -36,4 +39,21 @@ class ExampleDTO {
      * @var string
      */
     protected $protectedTypedProperty;
+    /**
+     * @var RefTestDTO
+     */
+    public $objectProperty;
+
+    public RefTestDTO $typedObjectProperty;
+
+    public ?RefTestDTO $typedNullableObjectProperty;
+
+    /**
+     * @var RefTestDTO[]
+     */
+    public array $classArrayProperty;
+    /**
+     * @var string|int|RefTestDTO
+     */
+    public $multipleTypesProperty;
 }

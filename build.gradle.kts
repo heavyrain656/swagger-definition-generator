@@ -130,4 +130,6 @@ dependencies {
     testImplementation("junit", "junit", "4.13")
     testImplementation("org.assertj", "assertj-core", "3.17.2")
     testImplementation("org.mockito", "mockito-core", "3.5.13")
+    api("com.google.dagger:dagger:2.29.1")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.29.1")
 }
