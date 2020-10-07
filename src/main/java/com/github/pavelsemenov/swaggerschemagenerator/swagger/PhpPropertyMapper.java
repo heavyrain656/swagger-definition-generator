@@ -75,7 +75,8 @@ public class PhpPropertyMapper {
     private Optional<Schema> parseClass(Field field, String type) {
         Optional<PhpClass> refClass = classExtractor.extractFromIndex(type);
 
-        return refClass.map(phpClass -> new ObjectSchema().name(field.getName()).$ref(phpClass.getName()));
+        return refClass.map(phpClass -> new ObjectSchema().name(field.getName()).$ref(phpClass.getName())
+                .description(phpClass.getFQN()));
     }
 
     private Optional<Schema> parseArray(Field field, PhpType type) {

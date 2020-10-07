@@ -3,7 +3,11 @@
 
 namespace tests;
 
-
+/**
+ * Class ClassTestDTO
+ * @package tests
+ * @property string $virtualProperty
+ */
 class ClassTestDTO
 {
     public const CONSTANT = 1;

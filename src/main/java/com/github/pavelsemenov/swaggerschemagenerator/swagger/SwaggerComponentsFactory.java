@@ -6,14 +6,12 @@ import com.jetbrains.php.lang.psi.PhpFile;
 import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 
 import javax.inject.Inject;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("rawtypes")
@@ -35,22 +33,44 @@ public class SwaggerComponentsFactory {
 
     public Components create(PhpFile file) {
         Optional<PhpClass> phpClass = classExtractor.extract(file);
-        Collection<Field> fields = phpClass.isPresent() ? fieldsExtractor.extract(phpClass.get()) : Collections.emptyList();
-        Optional<ObjectSchema> schema = fields.isEmpty() ? Optional.empty() : createSchema(phpClass.get(), fields);
-        Components components = new Components();
+        Map<String, Schema> schemaMap = phpClass.map(this::createSchemas).orElse(Collections.emptyMap());
 
-        return schema.isPresent() ? components.addSchemas(schema.get().getName(), schema.get()) : components;
+        return new Components().schemas(schemaMap);
     }
 
-    private Optional<ObjectSchema> createSchema(PhpClass phpClass, Collection<Field> fields) {
+    private Map<String, Schema> createSchemas(PhpClass phpClass) {
+        Map<String, Schema> schemaMap = new HashMap<>();
+        createSchema(phpClass, schemaMap);
+
+        return schemaMap;
+    }
+
+    private void createSchema(PhpClass phpClass, Map<String, Schema> schemaMap) {
         ObjectSchema rootSchema = new ObjectSchema();
-        Map<String, Schema> properties = fields.stream().map(propertyMapper::createSchema)
+        Collection<Field> fields = fieldsExtractor.extract(phpClass);
+        Map<String, Schema> properties = fields.stream()
+                .map(propertyMapper::createSchema)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toMap(Schema::getName, s -> s));
 
         rootSchema.name(phpClass.getName()).properties(properties);
+        if (!properties.isEmpty()) {
+            schemaMap.put(phpClass.getName(), rootSchema);
+            properties.values().stream().filter(f -> {
+                boolean isObject = f instanceof ObjectSchema;
+                boolean isObjectsArray = false;
+                if (f instanceof ArraySchema) {
+                    ArraySchema arraySchema = (ArraySchema) f;
+                    isObjectsArray = arraySchema.getItems() != null && arraySchema.getItems().get$ref() != null;
+                }
 
-        return properties.isEmpty() ? Optional.empty() : Optional.of(rootSchema);
+                return isObject || isObjectsArray;
+            }).forEach(f -> {
+                Optional<PhpClass> refClass = classExtractor.extractFromIndex(f.getDescription());
+                refClass.ifPresent(c -> createSchema(c, schemaMap));
+                f.description(null);
+            });
+        }
     }
 }

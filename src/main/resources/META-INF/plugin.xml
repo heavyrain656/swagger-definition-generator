@@ -1,7 +1,7 @@
 <idea-plugin>
-    <id>com.github.heavyrain656.swaggerdefinitiongenerator</id>
-    <name>swagger-definition-generator</name>
-    <vendor>heavyrain656</vendor>
+    <id>com.github.pavelsemenov.swaggerschemagenerator</id>
+    <name>Swagger Schema Generator</name>
+    <vendor>pave1-semenov</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
@@ -10,13 +10,12 @@
     <depends>com.jetbrains.php</depends>
     <actions>
         <action class="com.github.pavelsemenov.swaggerschemagenerator.action.TestAction" id="PsiNavigationDemo"
-                text="PSI Navigation Demo...">
+                text="Generate Swagger Definitions">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
-    <extensions>
-        <com.intellij.projectService
-                serviceInterface="com.github.pavelsemenov.swaggerschemagenerator.service.SwaggerSchemaService"
-                serviceImplementation="com.github.pavelsemenov.swaggerschemagenerator.service.impl.SwaggerSchemaServiceImpl"/>
+    <extensions defaultExtensionNs="com.intellij">
+        <projectService
+                serviceImplementation="com.github.pavelsemenov.swaggerschemagenerator.service.SwaggerService"/>
     </extensions>
 </idea-plugin>
