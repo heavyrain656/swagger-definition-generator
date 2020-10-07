@@ -1,21 +1,18 @@
 package com.github.pavelsemenov.swaggerschemagenerator.service;
 
 import com.github.pavelsemenov.swaggerschemagenerator.ioc.DaggerApplicationComponent;
-import com.github.pavelsemenov.swaggerschemagenerator.swagger.SwaggerDocumentationParser;
+import com.github.pavelsemenov.swaggerschemagenerator.swagger.SwaggerDocumentationGenerator;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
-import com.intellij.openapi.fileTypes.FileTypes;
+import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.impl.file.PsiDirectoryFactory;
+import com.intellij.testFramework.LightVirtualFile;
 import com.jetbrains.php.lang.psi.PhpFile;
 
 import java.util.Optional;
 
 public class SwaggerService {
-    private final SwaggerDocumentationParser componentsFactory;
+    private final SwaggerDocumentationGenerator componentsFactory;
     private final Project project;
 
     public SwaggerService(Project project) {
@@ -24,14 +21,11 @@ public class SwaggerService {
     }
 
     public void parseDocumentation(PhpFile phpFile) {
-        Optional<String> swagger = componentsFactory.parseDocumentation(phpFile);
+        Optional<String> swagger = componentsFactory.generate(phpFile);
         swagger.ifPresent(s -> {
-            PsiFile psiFile = PsiFileFactory.getInstance(project)
-                    .createFileFromText("swagger-schema.yaml", FileTypes.PLAIN_TEXT, s);
-            PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(project).createDirectory(project.getBaseDir());
-            psiDirectory.add(psiFile);
+            LightVirtualFile vf = new LightVirtualFile("swagger-schema.yaml", FileTypeManager.getInstance().getStdFileType("YAML"), s);
             FileEditorManager.getInstance(project).openTextEditor(
-                    new OpenFileDescriptor(project, psiFile.getVirtualFile()),
+                    new OpenFileDescriptor(project, vf),
                     true
             );
         });

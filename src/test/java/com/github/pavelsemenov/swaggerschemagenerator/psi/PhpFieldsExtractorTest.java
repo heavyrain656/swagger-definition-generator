@@ -31,7 +31,8 @@ public class PhpFieldsExtractorTest extends BasePhpFileTest {
         Set<String> validFieldNames = new HashSet<>(
                 Arrays.asList(
                         "stringProperty", "intProperty", "typedArrayProperty",
-                        "arrayProperty", "typedProperty", "objectProperty", "typedObjectProperty"
+                        "typedProperty", "objectProperty", "typedObjectProperty",
+                        "typedNullableObjectProperty", "classArrayProperty"
                 )
         );
         assertThat(fields).isNotEmpty().hasSameSizeAs(validFieldNames).allMatch(f -> validFieldNames.contains(f.getName()), "Incorrect fields are filtered out");

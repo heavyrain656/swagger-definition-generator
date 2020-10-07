@@ -60,4 +60,10 @@ class ClassTestDTO
      * @var string|int|RefTestDTO
      */
     public $multipleTypesProperty;
+
+    public \Closure $closureProperty;
+
+    public object $unknownObjectProperty;
+
+    public \Throwable $throwableProperty;
 }

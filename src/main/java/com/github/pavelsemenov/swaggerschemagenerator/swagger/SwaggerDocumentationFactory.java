@@ -6,6 +6,7 @@ import com.jetbrains.php.lang.psi.PhpFile;
 import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -15,13 +16,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("rawtypes")
-public class SwaggerComponentsFactory {
+public class SwaggerDocumentationFactory {
     private final PhpClassExtractor classExtractor;
     private final PhpFieldsExtractor fieldsExtractor;
     private final PhpPropertyMapper propertyMapper;
 
     @Inject
-    public SwaggerComponentsFactory(
+    public SwaggerDocumentationFactory(
             PhpClassExtractor classExtractor,
             PhpFieldsExtractor fieldsExtractor,
             PhpPropertyMapper propertyMapper
@@ -31,11 +32,12 @@ public class SwaggerComponentsFactory {
         this.propertyMapper = propertyMapper;
     }
 
-    public Components create(PhpFile file) {
+    public OpenAPI create(PhpFile file) {
         Optional<PhpClass> phpClass = classExtractor.extract(file);
         Map<String, Schema> schemaMap = phpClass.map(this::createSchemas).orElse(Collections.emptyMap());
+        Components components = new Components().schemas(schemaMap);
 
-        return new Components().schemas(schemaMap);
+        return new OpenAPI().components(components);
     }
 
     private Map<String, Schema> createSchemas(PhpClass phpClass) {
@@ -52,7 +54,8 @@ public class SwaggerComponentsFactory {
                 .map(propertyMapper::createSchema)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toMap(Schema::getName, s -> s));
+                .sorted(Comparator.comparing(Schema::getName))
+                .collect(Collectors.toMap(Schema::getName, s -> s, (v1, v2) -> v1, TreeMap::new));
 
         rootSchema.name(phpClass.getName()).properties(properties);
         if (!properties.isEmpty()) {
@@ -68,7 +71,11 @@ public class SwaggerComponentsFactory {
                 return isObject || isObjectsArray;
             }).forEach(f -> {
                 Optional<PhpClass> refClass = classExtractor.extractFromIndex(f.getDescription());
-                refClass.ifPresent(c -> createSchema(c, schemaMap));
+                refClass.ifPresent(c -> {
+                    if (!schemaMap.containsKey(c.getName())) {
+                        createSchema(c, schemaMap);
+                    }
+                });
                 f.description(null);
             });
         }

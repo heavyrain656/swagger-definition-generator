@@ -4,17 +4,17 @@ import com.github.pavelsemenov.swaggerschemagenerator.BasePhpFileTest;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpClassExtractor;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldsExtractor;
 import com.jetbrains.php.lang.psi.PhpFile;
-import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 
-public class SwaggerComponentsFactoryTest extends BasePhpFileTest {
+public class SwaggerDocumentationFactoryTest extends BasePhpFileTest {
     PhpClassExtractor classExtractor;
-    SwaggerComponentsFactory factory;
+    SwaggerDocumentationFactory factory;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         classExtractor = new PhpClassExtractor(getIndex());
-        factory = new SwaggerComponentsFactory(
+        factory = new SwaggerDocumentationFactory(
                 classExtractor,
                 new PhpFieldsExtractor(),
                 new PhpPropertyMapper(classExtractor)
@@ -24,7 +24,7 @@ public class SwaggerComponentsFactoryTest extends BasePhpFileTest {
     public void testCreate() {
         PhpFile phpFile = preparePhpFile("ClassTestDTO.php");
         preparePhpFile("RefTestDTO.php");
-        Components components = factory.create(phpFile);
+        OpenAPI components = factory.create(phpFile);
         System.out.println(components);
     }
 }

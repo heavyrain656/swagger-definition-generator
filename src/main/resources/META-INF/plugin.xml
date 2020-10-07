@@ -9,9 +9,10 @@
     <depends>com.intellij.modules.java</depends>
     <depends>com.jetbrains.php</depends>
     <actions>
-        <action class="com.github.pavelsemenov.swaggerschemagenerator.action.TestAction" id="PsiNavigationDemo"
+        <action class="com.github.pavelsemenov.swaggerschemagenerator.action.GenerateDefinitionsAction" id="GenerateSwaggerDefinitions"
                 text="Generate Swagger Definitions">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last" />
         </action>
     </actions>
     <extensions defaultExtensionNs="com.intellij">

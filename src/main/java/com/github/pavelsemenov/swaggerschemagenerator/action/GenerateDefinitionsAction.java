@@ -10,7 +10,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.jetbrains.php.lang.psi.PhpFile;
 
-public class TestAction extends AnAction {
+public class GenerateDefinitionsAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -29,7 +29,7 @@ public class TestAction extends AnAction {
     public void update(AnActionEvent e) {
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        e.getPresentation().setEnabled(editor != null && psiFile != null);
+        e.getPresentation().setEnabled(editor != null && psiFile instanceof PhpFile);
     }
 
 }

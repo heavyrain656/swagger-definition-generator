@@ -125,8 +125,7 @@ tasks {
 
 dependencies {
     implementation("io.swagger.core.v3", "swagger-models", "2.1.5")
-    implementation("com.fasterxml.jackson.core", "jackson-databind", "2.11.3")
-    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.11.3")
+    implementation("io.swagger.core.v3", "swagger-core", "2.1.5")
     testImplementation("junit", "junit", "4.13")
     testImplementation("org.assertj", "assertj-core", "3.17.2")
     testImplementation("org.mockito", "mockito-core", "3.5.13")

@@ -1,15 +1,14 @@
 package com.github.pavelsemenov.swaggerschemagenerator.swagger;
 
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpClassExtractor;
+import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldsExtractor;
 import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 import io.swagger.v3.oas.models.media.*;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("rawtypes")
 public class PhpPropertyMapper {
@@ -25,10 +24,7 @@ public class PhpPropertyMapper {
     }
 
     private Optional<Schema> parseType(Field field, PhpType type) {
-        List<String> filteredTypes = type.getTypes().stream().filter(t -> !PhpType._NULL.contains(t))
-                .collect(Collectors.toList());
-        String firstType = filteredTypes.size() == 1 ? filteredTypes.get(0) : PhpType._NULL;
-
+        String firstType = PhpFieldsExtractor.getFirstType(type);
         Optional<Schema> schema = Optional.empty();
 
         switch (firstType) {
@@ -52,19 +48,17 @@ public class PhpPropertyMapper {
             case PhpType._BOOL:
                 schema = Optional.of(new BooleanSchema());
                 break;
-            case PhpType._CLOSURE:
-            case PhpType._THROWABLE:
-            case PhpType._CALLABLE:
-            case PhpType._EXCEPTION:
-            case PhpType._OBJECT:
-            case PhpType._RESOURCE:
-            case PhpType._ARRAY:
             case PhpType._NULL:
                 break;
             default:
                 schema = parseClass(field, firstType);
         }
-        schema.ifPresent(s -> s.name(field.getName()).nullable(type.isNullable()));
+        schema.ifPresent(s -> {
+            s.name(field.getName());
+            if (type.isNullable()) {
+                s.nullable(true);
+            }
+        });
         if (!schema.isPresent() && PhpType.isPluralType(firstType)) {
             schema = parseArray(field, type);
         }
