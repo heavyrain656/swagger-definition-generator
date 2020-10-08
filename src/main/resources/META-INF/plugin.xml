@@ -6,7 +6,6 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.java</depends>
     <depends>com.jetbrains.php</depends>
     <actions>
         <action class="com.github.pavelsemenov.swaggerschemagenerator.action.GenerateDefinitionsAction" id="GenerateSwaggerDefinitions"

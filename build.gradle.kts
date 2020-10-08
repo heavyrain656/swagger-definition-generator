@@ -14,8 +14,6 @@ plugins {
     id("org.jetbrains.changelog") version "0.5.0"
     // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
     id("io.gitlab.arturbosch.detekt") version "1.13.1"
-    // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
-    id("org.jlleitschuh.gradle.ktlint") version "9.4.0"
 }
 
 // Import variables from gradle.properties file
@@ -129,6 +127,8 @@ dependencies {
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.0")
     testImplementation("org.assertj", "assertj-core", "3.17.2")
     testImplementation("org.mockito", "mockito-core", "3.5.13")
+
     api("com.google.dagger:dagger:2.29.1")
+    implementation("com.google.dagger", "dagger", "2.29.1")
     annotationProcessor("com.google.dagger:dagger-compiler:2.29.1")
 }

@@ -16,7 +16,7 @@ public class PhpPropertyMapper {
     private final PhpFieldFilter fieldFilter;
 
     @Inject
-    PhpPropertyMapper(PhpClassExtractor classExtractor, PhpFieldFilter fieldFilter) {
+    public PhpPropertyMapper(PhpClassExtractor classExtractor, PhpFieldFilter fieldFilter) {
         this.classExtractor = classExtractor;
         this.fieldFilter = fieldFilter;
     }

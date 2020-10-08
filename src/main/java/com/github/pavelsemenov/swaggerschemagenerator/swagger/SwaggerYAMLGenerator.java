@@ -12,7 +12,7 @@ public class SwaggerYAMLGenerator {
     private final OpenApiFactory documentationFactory;
 
     @Inject
-    SwaggerYAMLGenerator(OpenApiFactory documentationFactory) {
+    public SwaggerYAMLGenerator(OpenApiFactory documentationFactory) {
         this.documentationFactory = documentationFactory;
     }
 
