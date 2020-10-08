@@ -70,13 +70,20 @@ public class OpenApiFactory {
 
                 return isObject || isObjectsArray;
             }).forEach(f -> {
-                Optional<PhpClass> refClass = classExtractor.extractFromIndex(f.getDescription());
+                String FQN = f.getDescription();
+                if (f instanceof ArraySchema) {
+                    FQN = ((ArraySchema) f).getItems().getDescription();
+                }
+                Optional<PhpClass> refClass = classExtractor.extractFromIndex(FQN);
                 refClass.ifPresent(c -> {
                     if (!schemaMap.containsKey(c.getName())) {
                         createSchema(c, schemaMap);
                     }
                 });
                 f.description(null);
+                if (f instanceof ArraySchema) {
+                    ((ArraySchema) f).getItems().description(null);
+                }
             });
         }
     }

@@ -16,7 +16,7 @@ public class PhpPropertyMapper {
     private final PhpFieldFilter fieldFilter;
 
     @Inject
-    PhpPropertyMapper(PhpClassExtractor classExtractor, PhpFieldFilter fieldFilter) {
+    public PhpPropertyMapper(PhpClassExtractor classExtractor, PhpFieldFilter fieldFilter) {
         this.classExtractor = classExtractor;
         this.fieldFilter = fieldFilter;
     }
@@ -76,6 +76,6 @@ public class PhpPropertyMapper {
         PhpType single = type.unpluralize();
         Optional<Schema> itemSchema = parseType(field, single);
 
-        return itemSchema.map(s -> new ArraySchema().items(s).name(field.getName()).nullable(type.isNullable()));
+        return itemSchema.map(s -> new ArraySchema().items(s));
     }
 }
