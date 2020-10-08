@@ -56,7 +56,7 @@ intellij {
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
 //
-    setPlugins("com.jetbrains.php:${phpPluginVersion}", "java")
+    setPlugins("com.jetbrains.php:$phpPluginVersion", "java")
 }
 
 // Configure detekt plugin.
@@ -94,26 +94,21 @@ tasks {
         untilBuild(pluginUntilBuild)
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
-        pluginDescription(
-                closure {
-                    File("./README.md").readText().lines().run {
-                        val start = "<!-- Plugin description -->"
-                        val end = "<!-- Plugin description end -->"
+        pluginDescription(closure {
+            File("./README.md").readText().lines().run {
+                val start = "<!-- Plugin description -->"
+                val end = "<!-- Plugin description end -->"
 
-                        if (!containsAll(listOf(start, end))) {
-                            throw GradleException("Plugin description section not found in README.md file:\n$start ... $end")
-                        }
-                        subList(indexOf(start) + 1, indexOf(end))
-                    }.joinToString("\n").run { markdownToHTML(this) }
+                if (!containsAll(listOf(start, end))) {
+                    throw GradleException("Plugin description section not found in README.md file:\n$start ... $end")
                 }
+                subList(indexOf(start) + 1, indexOf(end))
+            }.joinToString("\n").run { markdownToHTML(this) }
+        }
         )
 
         // Get the latest available change notes from the changelog file
-        changeNotes(
-                closure {
-                    changelog.getLatest().toHTML()
-                }
-        )
+        changeNotes(closure { changelog.getLatest().toHTML() })
     }
 
     publishPlugin {
@@ -126,7 +121,6 @@ tasks {
         useJUnitPlatform()
     }
 }
-
 
 dependencies {
     implementation("io.swagger.core.v3", "swagger-models", "2.1.5")
