@@ -31,6 +31,8 @@ val platformType: String by project
 val platformVersion: String by project
 val platformDownloadSources: String by project
 
+val phpPluginVersion: String by project
+
 group = pluginGroup
 version = pluginVersion
 
@@ -51,11 +53,10 @@ intellij {
     type = platformType
     downloadSources = platformDownloadSources.toBoolean()
     updateSinceUntilBuild = true
-
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
 //
-//  setPlugins("java")
+    setPlugins("com.jetbrains.php:${phpPluginVersion}", "java")
 }
 
 // Configure detekt plugin.
@@ -94,24 +95,24 @@ tasks {
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription(
-            closure {
-                File("./README.md").readText().lines().run {
-                    val start = "<!-- Plugin description -->"
-                    val end = "<!-- Plugin description end -->"
+                closure {
+                    File("./README.md").readText().lines().run {
+                        val start = "<!-- Plugin description -->"
+                        val end = "<!-- Plugin description end -->"
 
-                    if (!containsAll(listOf(start, end))) {
-                        throw GradleException("Plugin description section not found in README.md file:\n$start ... $end")
-                    }
-                    subList(indexOf(start) + 1, indexOf(end))
-                }.joinToString("\n").run { markdownToHTML(this) }
-            }
+                        if (!containsAll(listOf(start, end))) {
+                            throw GradleException("Plugin description section not found in README.md file:\n$start ... $end")
+                        }
+                        subList(indexOf(start) + 1, indexOf(end))
+                    }.joinToString("\n").run { markdownToHTML(this) }
+                }
         )
 
         // Get the latest available change notes from the changelog file
         changeNotes(
-            closure {
-                changelog.getLatest().toHTML()
-            }
+                closure {
+                    changelog.getLatest().toHTML()
+                }
         )
     }
 
@@ -120,4 +121,20 @@ tasks {
         token(System.getenv("PUBLISH_TOKEN"))
         channels(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first())
     }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+
+dependencies {
+    implementation("io.swagger.core.v3", "swagger-models", "2.1.5")
+    implementation("io.swagger.core.v3", "swagger-core", "2.1.5")
+    testImplementation("org.junit.jupiter", "junit-jupiter", "5.7.0")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.0")
+    testImplementation("org.assertj", "assertj-core", "3.17.2")
+    testImplementation("org.mockito", "mockito-core", "3.5.13")
+    api("com.google.dagger:dagger:2.29.1")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.29.1")
 }
