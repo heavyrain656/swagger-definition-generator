@@ -16,13 +16,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("rawtypes")
-public class SwaggerDocumentationFactory {
+public class OpenApiFactory {
     private final PhpClassExtractor classExtractor;
     private final PhpFieldsExtractor fieldsExtractor;
     private final PhpPropertyMapper propertyMapper;
 
     @Inject
-    public SwaggerDocumentationFactory(
+    public OpenApiFactory(
             PhpClassExtractor classExtractor,
             PhpFieldsExtractor fieldsExtractor,
             PhpPropertyMapper propertyMapper

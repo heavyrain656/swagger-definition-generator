@@ -1,7 +1,7 @@
 package com.github.pavelsemenov.swaggerschemagenerator.swagger;
 
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpClassExtractor;
-import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldsExtractor;
+import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldFilter;
 import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
@@ -13,10 +13,12 @@ import java.util.Optional;
 @SuppressWarnings("rawtypes")
 public class PhpPropertyMapper {
     private final PhpClassExtractor classExtractor;
+    private final PhpFieldFilter fieldFilter;
 
     @Inject
-    PhpPropertyMapper(PhpClassExtractor classExtractor) {
+    PhpPropertyMapper(PhpClassExtractor classExtractor, PhpFieldFilter fieldFilter) {
         this.classExtractor = classExtractor;
+        this.fieldFilter = fieldFilter;
     }
 
     public Optional<Schema> createSchema(Field field) {
@@ -24,19 +26,19 @@ public class PhpPropertyMapper {
     }
 
     private Optional<Schema> parseType(Field field, PhpType type) {
-        String firstType = PhpFieldsExtractor.getFirstType(type);
+        String firstType = fieldFilter.getFirstType(type);
         Optional<Schema> schema = Optional.empty();
 
         switch (firstType) {
-            case PhpType._NUMBER:
-                schema = Optional.of(new NumberSchema());
-                break;
             case PhpType._INTEGER:
             case PhpType._INT:
                 schema = Optional.of(new IntegerSchema());
                 break;
             case PhpType._FLOAT:
                 schema = Optional.of(new NumberSchema().format("float"));
+                break;
+            case PhpType._NUMBER:
+                schema = Optional.of(new NumberSchema());
                 break;
             case PhpType._DOUBLE:
                 schema = Optional.of(new NumberSchema().format("double"));
@@ -51,7 +53,7 @@ public class PhpPropertyMapper {
             case PhpType._NULL:
                 break;
             default:
-                schema = parseClass(field, firstType);
+                schema = PhpType.isPluralType(firstType) ? parseArray(field, type) : parseClass(field, firstType);
         }
         schema.ifPresent(s -> {
             s.name(field.getName());
@@ -59,9 +61,6 @@ public class PhpPropertyMapper {
                 s.nullable(true);
             }
         });
-        if (!schema.isPresent() && PhpType.isPluralType(firstType)) {
-            schema = parseArray(field, type);
-        }
 
         return schema;
     }

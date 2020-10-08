@@ -8,11 +8,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import javax.inject.Inject;
 import java.util.Optional;
 
-public class SwaggerDocumentationGenerator {
-    private final SwaggerDocumentationFactory documentationFactory;
+public class SwaggerYAMLGenerator {
+    private final OpenApiFactory documentationFactory;
 
     @Inject
-    SwaggerDocumentationGenerator(SwaggerDocumentationFactory documentationFactory) {
+    SwaggerYAMLGenerator(OpenApiFactory documentationFactory) {
         this.documentationFactory = documentationFactory;
     }
 

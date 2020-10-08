@@ -2,22 +2,24 @@ package com.github.pavelsemenov.swaggerschemagenerator.swagger;
 
 import com.github.pavelsemenov.swaggerschemagenerator.BasePhpFileTest;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpClassExtractor;
+import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldFilter;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldsExtractor;
 import com.jetbrains.php.lang.psi.PhpFile;
 import io.swagger.v3.oas.models.OpenAPI;
 
-public class SwaggerDocumentationFactoryTest extends BasePhpFileTest {
+public class OpenApiFactoryTest extends BasePhpFileTest {
     PhpClassExtractor classExtractor;
-    SwaggerDocumentationFactory factory;
+    OpenApiFactory factory;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         classExtractor = new PhpClassExtractor(getIndex());
-        factory = new SwaggerDocumentationFactory(
+        PhpFieldFilter fieldFilter = new PhpFieldFilter();
+        factory = new OpenApiFactory(
                 classExtractor,
-                new PhpFieldsExtractor(),
-                new PhpPropertyMapper(classExtractor)
+                new PhpFieldsExtractor(fieldFilter),
+                new PhpPropertyMapper(classExtractor, fieldFilter)
         );
     }
 
