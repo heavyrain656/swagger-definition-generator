@@ -76,6 +76,6 @@ public class PhpPropertyMapper {
         PhpType single = type.unpluralize();
         Optional<Schema> itemSchema = parseType(field, single);
 
-        return itemSchema.map(s -> new ArraySchema().items(s).name(field.getName()).nullable(type.isNullable()));
+        return itemSchema.map(s -> new ArraySchema().items(s));
     }
 }
