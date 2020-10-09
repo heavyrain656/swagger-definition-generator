@@ -1,38 +1,18 @@
-# swagger-definition-generator
+# Swagger definition generator
 
 ![Build](https://github.com/pave1-semenov/swagger-definition-generator/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/15181-swagger-schema-generator)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/15181-swagger-schema-generator)
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Verify the [pluginGroup](/gradle.properties), [plugin ID](/src/main/resources/META-INF/plugin.xml) and [sources package](/src/main/kotlin).
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html).
-- [ ] [Publish a plugin manually](https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/publishing_plugin.html) for the first time.
-- [ ] Set the Plugin ID in the above README badges.
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-
-<!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
-
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
-<!-- Plugin description end -->
-
-## Installation
-
-- Using IDE built-in plugin system:
-  
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "swagger-definition-generator"</kbd> >
-  <kbd>Install Plugin</kbd>
-  
-- Manually:
-
-  Download the [latest release](https://github.com/heavyrain656/swagger-definition-generator/releases/latest) and install it manually using
-  <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
+This plugin generates Swagger OpenAPI file with schemas definitions for PHP classes.</p>
+## Usage
+Just click "Generate Swagger Definitions" in Tools menu or from Editor popup menu
+- Plugin needs valid PHP Class file to be opened at the moment</li>
+- It dumps only public properties with defined type - either with phpDoc or php 7.4 property type declaration</li>
+- The type must not be mixed or a combination of types like "string|int"</li>
+- Array types must be defined strictly - "int[]", "string[]", "SomeClass[]". Plain "array" declaration won't work</li>
+- Plugin handles inherited properties as well</li>
+- Class references are handled recursively. So if you got a class property it would persist in definitions file</li>
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].
