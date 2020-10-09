@@ -3,5 +3,8 @@
 # swagger-definition-generator Changelog
 
 ## [Unreleased]
+
+## [0.0.5] - 2020-10-10
 ### Added
-- Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+- The initial release of the plugin.
+- Swagger definitions generation can be accessed from Tools menu and Editor popup menu
