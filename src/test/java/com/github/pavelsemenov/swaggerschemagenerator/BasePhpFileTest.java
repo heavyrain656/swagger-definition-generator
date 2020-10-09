@@ -2,7 +2,6 @@ package com.github.pavelsemenov.swaggerschemagenerator;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.PhpFile;
@@ -19,8 +18,7 @@ public abstract class BasePhpFileTest extends BasePlatformTestCase {
 
     public PsiFile preparePsiFile(String fileName) {
         VirtualFile file = myFixture.copyFileToProject(fileName);
-        PsiManager psiManager = PsiManager.getInstance(getProject());
-        PsiFile psiFile = psiManager.findFile(file);
+        PsiFile psiFile = getPsiManager().findFile(file);
         assertThat(psiFile).isNotNull();
 
         return psiFile;

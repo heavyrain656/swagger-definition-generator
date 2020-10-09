@@ -57,11 +57,11 @@ public class OpenApiFactory {
                 .sorted(Comparator.comparing(Schema::getName))
                 .collect(Collectors.toMap(Schema::getName, s -> s, (v1, v2) -> v1, TreeMap::new));
 
-        rootSchema.name(phpClass.getName()).properties(properties);
         if (!properties.isEmpty()) {
+            rootSchema.name(phpClass.getName()).properties(properties);
             schemaMap.put(phpClass.getName(), rootSchema);
             properties.values().stream().filter(f -> {
-                boolean isObject = f instanceof ObjectSchema;
+                boolean isObject = f instanceof ObjectSchema && !f.get$ref().isEmpty();
                 boolean isObjectsArray = false;
                 if (f instanceof ArraySchema) {
                     ArraySchema arraySchema = (ArraySchema) f;
@@ -70,12 +70,8 @@ public class OpenApiFactory {
 
                 return isObject || isObjectsArray;
             }).forEach(f -> {
-                String FQN = f.getDescription();
-                if (f instanceof ArraySchema) {
-                    FQN = ((ArraySchema) f).getItems().getDescription();
-                }
-                Optional<PhpClass> refClass = classExtractor.extractFromIndex(FQN);
-                refClass.ifPresent(c -> {
+                String FQN = f instanceof ArraySchema ? ((ArraySchema) f).getItems().getDescription() : f.getDescription();
+                classExtractor.extractFromIndex(FQN).ifPresent(c -> {
                     if (!schemaMap.containsKey(c.getName())) {
                         createSchema(c, schemaMap);
                     }
