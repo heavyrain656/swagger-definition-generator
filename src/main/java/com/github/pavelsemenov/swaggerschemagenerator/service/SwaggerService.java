@@ -12,15 +12,14 @@ import com.jetbrains.php.lang.psi.PhpFile;
 import java.util.Optional;
 
 public class SwaggerService {
-    private final SwaggerYAMLGenerator swaggerGenerator;
     private final Project project;
 
     public SwaggerService(Project project) {
-        swaggerGenerator = DaggerApplicationComponent.factory().create(project).swagger();
         this.project = project;
     }
 
     public void parseDocumentation(PhpFile phpFile) {
+        SwaggerYAMLGenerator swaggerGenerator = DaggerApplicationComponent.factory().create(project).swagger();
         Optional<String> swagger = swaggerGenerator.generate(phpFile);
         swagger.ifPresent(s -> {
             LightVirtualFile vf = new LightVirtualFile("swagger-schema.yaml", FileTypeManager.getInstance().getStdFileType("YAML"), s);

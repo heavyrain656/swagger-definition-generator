@@ -1,7 +1,24 @@
 <idea-plugin>
     <id>com.github.pavelsemenov.swaggerschemagenerator</id>
     <name>Swagger Schema Generator</name>
-    <vendor>pave1-semenov</vendor>
+    <vendor email="pavel.semenov111@gmail.com">Pavel Semenov</vendor>
+
+    <description><![CDATA[
+<p>This plugin generates Swagger OpenAPI file with schemas definitions for PHP classes.</p>
+<br/>
+<h2>Usage</h2>
+<p>Just click "Generate Swagger Definitions" in Tools menu or from Editor popup menu.</p>
+<ul>
+    <li>Plugin needs valid PHP Class file to be opened at the moment</li>
+    <li>It dumps only public properties with defined type - either with phpDoc or php 7.4 property type declaration</li>
+    <li>The type must not be mixed or a combination of types like "string|int"</li>
+    <li>Arrays types must be defined strictly - "int[]", "string[]", "SomeClass[]". Plain "array" declaration won't work</li>
+    <li>Plugin handles inherited properties as well</li>
+    <li>Class references are handled recursively. So if you got a class property it would persist in definitions file</li>
+</ul>
+      ]]></description>
+
+    <change-notes>This is a initial release of the plugin.</change-notes>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
