@@ -8,3 +8,8 @@
 ### Added
 - The initial release of the plugin.
 - Swagger definitions generation can be accessed from Tools menu and Editor popup menu
+
+
+## [0.0.6] - 2020-10-23
+### Added
+- Parsing fields description from phpDoc tags

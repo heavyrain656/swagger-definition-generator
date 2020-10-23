@@ -40,7 +40,7 @@ public class OpenApiFactoryTest {
 
     @Test
     void testScalarFields() {
-        Collection<Field> fields = mockFields();
+        List<Field> fields = mockFields();
         PhpClass phpClass = mockClass(fields);
         PhpFile file = mockFile(phpClass);
         prepareFields(fields);
@@ -67,7 +67,7 @@ public class OpenApiFactoryTest {
 
     @Test
     void testPropertyMapperFails() {
-        Collection<Field> fields = mockFields();
+        List<Field> fields = mockFields();
         PhpClass phpClass = mockClass(fields);
         PhpFile file = mockFile(phpClass);
         fields.forEach(f -> when(propertyMapper.createSchema(f)).thenReturn(Optional.empty()));
@@ -86,8 +86,8 @@ public class OpenApiFactoryTest {
         verify(fieldsExtractor, times(2)).extract(any(PhpClass.class));
     }
 
-    void defaultObjectRefTest(Collection<Field> fields) {
-        Collection<Field> refFields = mockFields();
+    void defaultObjectRefTest(List<Field> fields) {
+        List<Field> refFields = mockFields();
         PhpClass refClass = mockClass(refFields);
         doTestObjectRef(fields, refFields, refClass, f -> {
             ObjectSchema schema = mock(ObjectSchema.class);
@@ -102,7 +102,7 @@ public class OpenApiFactoryTest {
         verify(fieldsExtractor, times(2)).extract(any(PhpClass.class));
     }
 
-    void doTestObjectRef(Collection<Field> fields, Collection<Field> refFields, PhpClass refClass, Consumer<Field> fieldHandler) {
+    void doTestObjectRef(List<Field> fields, List<Field> refFields, PhpClass refClass, Consumer<Field> fieldHandler) {
         PhpClass phpClass = mockClass(fields);
         PhpFile file = mockFile(phpClass);
         fields.forEach(fieldHandler);
@@ -119,7 +119,7 @@ public class OpenApiFactoryTest {
 
     @Test
     void testArrayRef() {
-        Collection<Field> refFields = mockFields();
+        List<Field> refFields = mockFields();
         PhpClass refClass = mockClass(refFields);
         doTestObjectRef(mockFields(1), refFields, refClass, field -> {
             ArraySchema schema = mock(ArraySchema.class);
@@ -159,11 +159,11 @@ public class OpenApiFactoryTest {
         }).collect(Collectors.toList());
     }
 
-    Collection<Field> mockFields() {
+    List<Field> mockFields() {
         return mockFields(10);
     }
 
-    PhpClass mockClass(Collection<Field> fields) {
+    PhpClass mockClass(List<Field> fields) {
         PhpClass phpClass = mock(PhpClass.class);
         when(fieldsExtractor.extract(phpClass)).thenReturn(fields);
         when(phpClass.getName()).thenReturn("TestClass" + fields.size());

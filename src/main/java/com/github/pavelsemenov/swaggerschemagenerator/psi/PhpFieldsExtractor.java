@@ -5,7 +5,7 @@ import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 
 import javax.inject.Inject;
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PhpFieldsExtractor {
@@ -16,7 +16,7 @@ public class PhpFieldsExtractor {
         this.fieldFilter = fieldFilter;
     }
 
-    public Collection<Field> extract(PhpClass phpClass) {
+    public List<Field> extract(PhpClass phpClass) {
         return phpClass.getFields().stream().filter(f -> !f.isConstant())
                 .filter(f -> !(f instanceof PhpDocProperty))
                 .filter(f -> !f.getModifier().isStatic() && f.getModifier().isPublic())

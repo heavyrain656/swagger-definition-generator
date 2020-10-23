@@ -15,10 +15,16 @@
     <li>Arrays types must be defined strictly - "int[]", "string[]", "SomeClass[]". Plain "array" declaration won't work</li>
     <li>Plugin handles inherited properties as well</li>
     <li>Class references are handled recursively. So if you got a class property it would persist in definitions file</li>
+    <li>Property description must precede any phpDoc tags and must be on a separate line to be parsed</li>
 </ul>
       ]]></description>
 
-    <change-notes>This is a initial release of the plugin.</change-notes>
+    <change-notes><![CDATA[
+        <ul>
+            <li>[0.0.5] - 2020-10-10: Initial release of the plugin</li>
+            <li>[0.0.6] - 2020-10-23: Parsing fields description from phpDoc tags</li>
+        </ul>
+  ]]></change-notes>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
