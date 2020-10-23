@@ -14,6 +14,7 @@ class ClassTestDTO
 
     public static $staticProp;
     /**
+     * this is a string property
      * @var string
      */
     public $stringProperty;

@@ -2,6 +2,8 @@ package com.github.pavelsemenov.swaggerschemagenerator.swagger;
 
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpClassExtractor;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldFilter;
+import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpPropertyDescriptionExtractor;
+import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment;
 import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
@@ -14,11 +16,13 @@ import java.util.Optional;
 public class PhpPropertyMapper {
     private final PhpClassExtractor classExtractor;
     private final PhpFieldFilter fieldFilter;
+    private final PhpPropertyDescriptionExtractor descriptionExtractor;
 
     @Inject
-    public PhpPropertyMapper(PhpClassExtractor classExtractor, PhpFieldFilter fieldFilter) {
+    public PhpPropertyMapper(PhpClassExtractor classExtractor, PhpFieldFilter fieldFilter, PhpPropertyDescriptionExtractor descriptionExtractor) {
         this.classExtractor = classExtractor;
         this.fieldFilter = fieldFilter;
+        this.descriptionExtractor = descriptionExtractor;
     }
 
     public Optional<Schema> createSchema(Field field) {
@@ -60,6 +64,7 @@ public class PhpPropertyMapper {
             if (type.isNullable()) {
                 s.nullable(true);
             }
+            descriptionExtractor.extractDescription(field).ifPresent(s::description);
         });
 
         return schema;

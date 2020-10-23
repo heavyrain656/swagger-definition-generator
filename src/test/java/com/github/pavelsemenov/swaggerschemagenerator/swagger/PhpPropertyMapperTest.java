@@ -2,6 +2,7 @@ package com.github.pavelsemenov.swaggerschemagenerator.swagger;
 
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpClassExtractor;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldFilter;
+import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpPropertyDescriptionExtractor;
 import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
@@ -25,12 +26,14 @@ public class PhpPropertyMapperTest {
     PhpClassExtractor classExtractor;
     @Mock
     PhpFieldFilter fieldFilter;
+    @Mock
+    PhpPropertyDescriptionExtractor descriptionExtractor;
     PhpPropertyMapper propertyMapper;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        propertyMapper = new PhpPropertyMapper(classExtractor, fieldFilter);
+        propertyMapper = new PhpPropertyMapper(classExtractor, fieldFilter, descriptionExtractor);
     }
 
     @ParameterizedTest
@@ -68,6 +71,18 @@ public class PhpPropertyMapperTest {
         Optional<Schema> schema = propertyMapper.createSchema(mockField(type));
         assertThat(schema).isPresent();
         assertThat(schema.get().getNullable()).isTrue();
+    }
+
+    @Test
+    public void testDescription() {
+        PhpType type = PhpType.builder().add(PhpType._STRING).add(PhpType._NULL).build();
+        when(fieldFilter.getFirstType(type)).thenReturn(PhpType._STRING);
+        Field field = mockField(type);
+        when(descriptionExtractor.extractDescription(field)).thenReturn(Optional.of("description"));
+        Optional<Schema> schema = propertyMapper.createSchema(field);
+        assertThat(schema).isPresent();
+        assertThat(schema.get().getNullable()).isTrue();
+        assertThat(schema.get().getDescription()).isEqualTo("description");
     }
 
     @ParameterizedTest
