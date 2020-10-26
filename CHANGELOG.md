@@ -13,3 +13,7 @@
 ## [0.0.6] - 2020-10-23
 ### Added
 - Parsing fields description from phpDoc tags
+
+## [0.0.7] - 2020-10-26
+### Fixed
+- Parsing nested classes from a field with description

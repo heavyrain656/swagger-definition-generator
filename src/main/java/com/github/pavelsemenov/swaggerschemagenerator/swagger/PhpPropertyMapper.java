@@ -3,7 +3,6 @@ package com.github.pavelsemenov.swaggerschemagenerator.swagger;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpClassExtractor;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpFieldFilter;
 import com.github.pavelsemenov.swaggerschemagenerator.psi.PhpPropertyDescriptionExtractor;
-import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment;
 import com.jetbrains.php.lang.psi.elements.Field;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
@@ -74,7 +73,7 @@ public class PhpPropertyMapper {
         Optional<PhpClass> refClass = classExtractor.extractFromIndex(type);
 
         return refClass.map(phpClass -> new ObjectSchema().name(field.getName()).$ref(phpClass.getName())
-                .description(phpClass.getFQN()));
+                .pattern(phpClass.getFQN()));
     }
 
     private Optional<Schema> parseArray(Field field, PhpType type) {
