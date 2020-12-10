@@ -17,3 +17,7 @@
 ## [0.0.7] - 2020-10-26
 ### Fixed
 - Parsing nested classes from a field with description
+
+## [0.0.8] - 2020-12-10
+### Added
+- PhpStorm 2020.3 support
