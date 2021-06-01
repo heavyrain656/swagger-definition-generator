@@ -21,3 +21,7 @@
 ## [0.0.8] - 2020-12-10
 ### Added
 - PhpStorm 2020.3 support
+
+## [0.0.9] - 2021-01-06
+### Added
+- PhpStorm 2021.1 support

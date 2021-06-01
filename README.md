@@ -1,8 +1,8 @@
 # Swagger definition generator
 
 ![Build](https://github.com/pave1-semenov/swagger-definition-generator/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/15181-swagger-schema-generator)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/15181-swagger-schema-generator)
+[![Version](https://img.shields.io/jetbrains/plugin/v/com.github.pavelsemenov.swaggerschemagenerator.svg)](https://plugins.jetbrains.com/plugin/15181)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.github.pavelsemenov.swaggerschemagenerator.svg)](https://plugins.jetbrains.com/plugin/15181)
 
 <!-- Plugin description -->
 This plugin generates Swagger OpenAPI file with schemas definitions for PHP classes.
