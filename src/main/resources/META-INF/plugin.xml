@@ -23,6 +23,8 @@
         <ul>
             <li>[0.0.5] - 2020-10-10: Initial release of the plugin</li>
             <li>[0.0.6] - 2020-10-23: Parsing fields description from phpDoc tags</li>
+            <li>[0.0.7] - 2020-10-26: Bugfix - parsing nested classes from a field with description</li>
+            <li>[0.0.8] - 2020-12-10: PhpStorm 2020.3 support</li>
         </ul>
   ]]></change-notes>
 

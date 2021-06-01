@@ -99,7 +99,7 @@ public class PhpPropertyMapperTest {
         when(classExtractor.extractFromIndex(type)).thenReturn(phpClassOpt);
         ObjectSchema schemaType = testType(type, ObjectSchema.class);
         assertThat(schemaType.get$ref()).contains(phpClass.getName());
-        assertThat(schemaType.getDescription()).isEqualTo(phpClass.getFQN());
+        assertThat(schemaType.getPattern()).isEqualTo(phpClass.getFQN());
     }
 
     @ParameterizedTest

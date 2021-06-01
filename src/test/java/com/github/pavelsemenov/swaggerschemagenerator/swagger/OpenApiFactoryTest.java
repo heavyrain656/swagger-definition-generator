@@ -95,7 +95,7 @@ public class OpenApiFactoryTest {
             when(schema.getName()).thenReturn(name);
             String refName = refClass.getName();
             when(schema.get$ref()).thenReturn(refName);
-            when(schema.getDescription()).thenReturn(refName);
+            when(schema.getPattern()).thenReturn(refName);
             when(classExtractor.extractFromIndex(refName)).thenReturn(Optional.of(refClass));
             when(propertyMapper.createSchema(f)).thenReturn(Optional.of(schema));
         });
@@ -128,7 +128,7 @@ public class OpenApiFactoryTest {
             String refName = refClass.getName();
             ObjectSchema itemsSchema = mock(ObjectSchema.class);
             when(itemsSchema.get$ref()).thenReturn(refName);
-            when(itemsSchema.getDescription()).thenReturn(refName);
+            when(itemsSchema.getPattern()).thenReturn(refName);
             when(schema.getItems()).thenReturn((Schema) itemsSchema);
             when(classExtractor.extractFromIndex(refName)).thenReturn(Optional.of(refClass));
             when(propertyMapper.createSchema(field)).thenReturn(Optional.of(schema));
