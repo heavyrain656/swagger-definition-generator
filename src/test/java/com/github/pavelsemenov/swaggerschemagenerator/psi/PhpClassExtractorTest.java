@@ -20,13 +20,11 @@ public class PhpClassExtractorTest extends BasePhpFileTest {
     public void testValidPHPClass() {
         PhpFile phpFile = preparePhpFile("ClassTestDTO.php");
         Optional<PhpClass> extracted = extractor.extract(phpFile);
-        simpleDTOAssertions(extracted);
+        extracted.ifPresent(this::simpleDTOAssertions);
     }
 
-    private void simpleDTOAssertions(Optional<PhpClass> result) {
-        assertThat(result.isPresent()).isTrue();
-        PhpClass phpClass = result.get();
-        assertThat(phpClass.getName()).isEqualTo("ClassTestDTO");
+    private void simpleDTOAssertions(PhpClass result) {
+        assertThat(result.getName()).isEqualTo("ClassTestDTO");
     }
 
     public void testPhpFileWithoutClass() {
@@ -38,6 +36,6 @@ public class PhpClassExtractorTest extends BasePhpFileTest {
     public void testFromIndex() {
         preparePhpFile("ClassTestDTO.php");
         Optional<PhpClass> extracted = extractor.extractFromIndex("\\tests\\ClassTestDTO");
-        simpleDTOAssertions(extracted);
+        extracted.ifPresent(this::simpleDTOAssertions);
     }
 }
